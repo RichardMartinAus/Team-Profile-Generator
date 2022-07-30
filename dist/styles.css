@@ -1,0 +1,75 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    max-width: 100vw;
+    max-height: 100vh;
+    font-family: sans-serif;
+}
+
+header {
+    background-color: crimson;
+    color: white;
+    text-align: center;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+h2, h3 {
+    font-weight: 500;
+}
+
+h2 {
+    font-size: 1.8rem;
+}
+
+h3 {
+    font-size: 1.25rem;
+}
+
+.card {
+    min-width: 300px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.283);
+    margin: 30px;
+}
+
+.card-header {
+    border-radius: 10px 10px 0px 0px;
+    padding: 25px;
+    background-color: rgb(40, 109, 237);
+    color: white;
+    line-height: 2.5rem;
+}
+
+.card-body {
+    background-color: rgb(230, 229, 229);
+    padding: 40px 20px;
+    border-radius: 0px 0px 10px 10px;
+}
+
+.card-body p {
+    background-color: white;
+    padding: 15px;
+    border: 1px solid darkgray;
+    
+}
+
+
+h3 .material-symbols-outlined {
+  font-weight: 500;
+  font-size: 1.5rem;
+  vertical-align: text-bottom;
+  padding-right: 5px;
+}
