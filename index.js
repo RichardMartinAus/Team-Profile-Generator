@@ -73,7 +73,7 @@ function askQuestions() {
             askQuestions();
         } else {
             console.log('Your team is made up of:' + JSON.stringify(userAnswers));
-            module.exports(userAnswers);
+            module.exports = {userAnswers};
         }
     })
 }
