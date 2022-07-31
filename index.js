@@ -52,7 +52,7 @@ const questions = [
     {
         type: 'input',
         name: 'employeeSchool',
-        message: 'What school is the employee attending?',
+        message: 'What school did the employee attend?',
         when: (answers) => answers.employeeType === 'Intern',
     },
     {
@@ -78,7 +78,9 @@ function askQuestions() {
     })
 }
 
+// write a function to generate the html cards for each class
 
+// function to add the cards into the html and write the html file
 
 // Functions to call when the app is initialized by index.js
 function init() {
