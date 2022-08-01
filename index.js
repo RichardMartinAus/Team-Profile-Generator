@@ -2,8 +2,16 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 
-// Empty array for the user responses to build with
-const userAnswers = [];
+// Import classes
+const Employee = require('./lib/employee');
+const Manager = require('./lib/manager');
+const Engineer = require('./lib/engineer');
+const Intern = require('./lib/intern');
+
+// Empty arrays for the user responses to build with
+const isManager = [];
+const isEngineer = [];
+const isIntern = [];
 
 // Questions for user using inquierer
 const questions = [
@@ -66,19 +74,19 @@ function askQuestions() {
         if (answers.askAgain) {
             askQuestions();
         } else {
-            createClassHtml(userAnswers);
+            // SEPARATE ANSWERS INTO CLASSES BASED ON FIRST ANSWER
+            // ie. if answers.employeeType === 'manager', push to isManager Array
+            // if answers.employeeType === 'engineer', push to new isEngineer array
+            // if answers.employeeType === 'intern', push to new isIntern array
+            createClassHtml(answers);
         };
     });
 };
 
-// Import classes
-const Employee = require('./lib/employee');
-const Manager = require('./lib/manager');
-const Engineer = require('./lib/engineer');
-const Intern = require('./lib/intern');
+// use manager, engineer and intern arrays to generate below.
 
 // Function to generate the html cards for each class
-function createClassHtml() {
+function createClassHtml(answers) {
     if (Employee.getRole === 'manager') {
         return `\n<div class="card">
             <div class="card-header">
