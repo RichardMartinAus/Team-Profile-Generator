@@ -1,8 +1,3 @@
-// Ask user questions via enquirer
-// separate answers to various classes
-// collect classes to build back into the html template
-// render and write the html file
-
 // Include packages needed for this application
 const inquirer = require('inquirer');
 const fs = require('fs');
@@ -63,7 +58,6 @@ const questions = [
     },
 ];
 
-
 // Function to ask the questions and filter according to answers
 function askQuestions() {
     inquirer.prompt(questions)
@@ -72,15 +66,107 @@ function askQuestions() {
         if (answers.askAgain) {
             askQuestions();
         } else {
-            console.log('Your team is made up of:' + JSON.stringify(userAnswers));
-            module.exports = {userAnswers};
-        }
-    })
+            createClassHtml(userAnswers);
+        };
+    });
+};
+
+// Import classes
+const Employee = require('./lib/employee');
+const Manager = require('./lib/manager');
+const Engineer = require('./lib/engineer');
+const Intern = require('./lib/intern');
+
+// Function to generate the html cards for each class
+function createClassHtml() {
+    if (Employee.getRole === 'manager') {
+        return `\n<div class="card">
+            <div class="card-header">
+                <h2>${Employee.getName}</h2>
+                <h3><span class="material-symbols-outlined">
+                        leaderboard
+                    </span> Manager</h3>
+            </div>
+            <div class="card-body">
+                <p>ID: ${Employee.getId}</p>
+                <p>Email: ${Employee.getEmail}</p>
+                <p>Office number: ${Manager.officeNumber}</p>
+            </div>
+        </div>`
+    } else if (Employee.getRole === 'engineer') {
+        return `\n<div class="card">
+            <div class="card-header">
+                <h2>${Employee.getName}</h2>
+                <h3><span class="material-symbols-outlined">
+                        integration_instructions
+                    </span> Engineer</h3>
+            </div>
+            <div class="card-body">
+                <p>ID: ${Employee.getId}</p>
+                <p>Email: ${Employee.getEmail}</p>
+                <p>GitHub: ${Engineer.getGithub}</p>
+            </div>
+        </div>`
+    } else if (Employee.getRole === 'intern') {
+        return `\n<div class="card">
+            <div class="card-header">
+                <h2>${Employee.getName}</h2>
+                <h3><span class="material-symbols-outlined">
+                        school
+                    </span> Intern</h3>
+            </div>
+            <div class="card-body">
+                <p>ID: ${Employee.getId}</p>
+                <p>Email: ${Employee.getEmail}</p>
+                <p>GitHub: ${Intern.getSchool}</p>
+            </div>
+        </div>`
+    }
+   
+    generateHtml();
+    writeHtml();
 }
 
-// write a function to generate the html cards for each class
-
 // function to add the cards into the html and write the html file
+const generateHtml = (createClassHtml) => 
+    `<!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>My Team</title>
+        <link rel="stylesheet" href="../dist/styles.css">
+        <!-- Google fonts icons -->
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    </head>
+
+    <body>
+        <!-- Header -->
+        <header>
+            <h1>My Team</h1>
+        </header>
+
+        <!-- Main body -->
+        <div class="container">
+            <!-- Cards -->
+            ${createClassHtml}
+
+        </div>
+
+
+    </body>
+
+    </html>`;
+
+// Function to write the html file
+function writeHtml(generateHtml) {
+    fs.writeFile('./dist/index.html', `${generateHtml}`, (err) =>
+    err ? console.error(err) : console.log('HTML file successfully written!')
+    );
+};
 
 // Functions to call when the app is initialized by index.js
 function init() {
