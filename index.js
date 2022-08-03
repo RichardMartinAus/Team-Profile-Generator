@@ -8,10 +8,10 @@ const Manager = require('./lib/manager');
 const Engineer = require('./lib/engineer');
 const Intern = require('./lib/intern');
 
-// Empty arrays for the user responses to build with
-const isManager = [];
-const isEngineer = [];
-const isIntern = [];
+// Empty array for classes
+const managerArray = [];
+const engineerArray = [];
+const internArray = [];
 
 // Questions for user using inquierer
 const questions = [
@@ -70,73 +70,85 @@ const questions = [
 function askQuestions() {
     inquirer.prompt(questions)
     .then((answers) => {
-        userAnswers.push(answers);
+        if (answers.employeeType === 'Manager') {
+            let manager = new Manager(answers.employeeName, answers.employeeId, answers.employeeEmail, answers.employeeOffice);
+            managerArray.push(manager);
+            createManager(Manager);
+        } 
+        if (answers.employeeType === 'Engineer') {
+            let engineer = new Engineer(answers.employeeName, answers.employeeId, answers.employeeEmail, answers.employeeGithub);
+            engineerArray.push(engineer);
+            createEngineer(Engineer);
+        }
+        if (answers.employeeType === 'Intern') {
+            let intern = new Intern(answers.employeeName, answers.employeeId, answers.employeeEmail, answers.employeeSchool);
+            internArray.push(intern);
+            createIntern(Intern);
+        }  
         if (answers.askAgain) {
             askQuestions();
-        } else {
-            // SEPARATE ANSWERS INTO CLASSES BASED ON FIRST ANSWER
-            // ie. if answers.employeeType === 'manager', push to isManager Array
-            // if answers.employeeType === 'engineer', push to new isEngineer array
-            // if answers.employeeType === 'intern', push to new isIntern array
-            createClassHtml(answers);
+        }  
+        else {
+            generateHtml(Manager, Engineer, Intern);
+            console.log(managerArray);
+            console.log(engineerArray);
+            console.log(internArray);
+            writeHtml();
         };
     });
 };
 
-// use manager, engineer and intern arrays to generate below.
-
-// Function to generate the html cards for each class
-function createClassHtml(answers) {
-    if (Employee.getRole === 'manager') {
-        return `\n<div class="card">
+function createManager() {
+    return `\n<div class="card">
             <div class="card-header">
-                <h2>${Employee.getName}</h2>
+                <h2>${Manager.getName}</h2>
                 <h3><span class="material-symbols-outlined">
                         leaderboard
                     </span> Manager</h3>
             </div>
             <div class="card-body">
-                <p>ID: ${Employee.getId}</p>
-                <p>Email: ${Employee.getEmail}</p>
-                <p>Office number: ${Manager.officeNumber}</p>
+                <p>ID: ${Manager.getId}</p>
+                <p>Email: <a>${Manager.getEmail}</a></p>
+                <p>Office number: ${Manager.getOffice}</p>
             </div>
-        </div>`
-    } else if (Employee.getRole === 'engineer') {
-        return `\n<div class="card">
+        </div>`;
+};
+
+function createEngineer() {
+    return `\n<div class="card">
             <div class="card-header">
-                <h2>${Employee.getName}</h2>
+                <h2>${Engineer.getName}</h2>
                 <h3><span class="material-symbols-outlined">
                         integration_instructions
                     </span> Engineer</h3>
             </div>
             <div class="card-body">
-                <p>ID: ${Employee.getId}</p>
-                <p>Email: ${Employee.getEmail}</p>
-                <p>GitHub: ${Engineer.getGithub}</p>
+                <p>ID: ${Engineer.getId}</p>
+                <p>Email: <a>${Engineer.getEmail}</a></p>
+                <p>GitHub: <a>${Engineer.getGithub}</a></p>
             </div>
-        </div>`
-    } else if (Employee.getRole === 'intern') {
-        return `\n<div class="card">
+        </div>`;
+};
+
+function createIntern() {
+    return `\n<div class="card">
             <div class="card-header">
-                <h2>${Employee.getName}</h2>
+                <h2>${Intern.getName}</h2>
                 <h3><span class="material-symbols-outlined">
                         school
                     </span> Intern</h3>
             </div>
             <div class="card-body">
-                <p>ID: ${Employee.getId}</p>
-                <p>Email: ${Employee.getEmail}</p>
+                <p>ID: ${Intern.getId}</p>
+                <p>Email: <a>${Intern.getEmail}</a></p>
                 <p>GitHub: ${Intern.getSchool}</p>
             </div>
-        </div>`
-    }
-   
-    generateHtml();
-    writeHtml();
+        </div>`;
 }
 
+
 // function to add the cards into the html and write the html file
-const generateHtml = (createClassHtml) => 
+const generateHtml = (manager, engineer, intern ) => {
     `<!DOCTYPE html>
     <html lang="en">
 
@@ -160,7 +172,9 @@ const generateHtml = (createClassHtml) =>
         <!-- Main body -->
         <div class="container">
             <!-- Cards -->
-            ${createClassHtml}
+            ${createManager(manager)}
+            ${createEngineer(engineer)}
+            ${createIntern(intern)}
 
         </div>
 
@@ -169,9 +183,13 @@ const generateHtml = (createClassHtml) =>
 
     </html>`;
 
+    
+}
+    
+
 // Function to write the html file
-function writeHtml(generateHtml) {
-    fs.writeFile('./dist/index.html', `${generateHtml}`, (err) =>
+function writeHtml() {
+    fs.writeFile('./dist/index.html', `${generateHtml()}`, (err) =>
     err ? console.error(err) : console.log('HTML file successfully written!')
     );
 };
