@@ -30,7 +30,7 @@ Screenshot of the command prompt application:
 Screenshot of the HTML file created by the app (intended):
 ![Screenshot of html page generated](assets/screenshot02.jpg?raw=true)
 
-Link to a video demonstrating the application:
+Link to a video demonstrating the application: https://drive.google.com/file/d/1rsF2H8vYYAbvBfP2Xo9YrHrXvej-8hsz/view
 
 
 ## Contributing
